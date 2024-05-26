@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const Employee = require('../models/Employee');
-const { isTokenBlacklisted } = require('../controllers/logoutController');
+const { isTokenBlacklisted } = require('../controllers/authController');
 
 const protect = async (req, res, next) => {
   let token;

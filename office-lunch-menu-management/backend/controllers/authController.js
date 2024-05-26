@@ -2,6 +2,8 @@ const Employee = require('../models/Employee');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
+const blacklist = new Set();
+
 const register = async (req, res) => {
   const { name, email, password, role } = req.body;
   try {
@@ -56,8 +58,18 @@ const login = async (req, res) => {
   }
 };
 
+const logout = (req, res) => {
+  const token = req.header('Authorization').replace('Bearer ', '');
+  blacklist.add(token);
+  res.json({ message: 'Logged out successfully' });
+};
+
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '30d' });
 };
 
-module.exports = { register, login };
+const isTokenBlacklisted = (token) => {
+  return blacklist.has(token);
+};
+
+module.exports = { register, login, logout, isTokenBlacklisted };
