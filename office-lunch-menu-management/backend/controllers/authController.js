@@ -16,6 +16,7 @@ const register = async (req, res) => {
 
     const token = generateToken(employee._id);
     res.status(201).json({
+      _id: employee._id,
       name: employee.name,
       email: employee.email,
       role: employee.role,
